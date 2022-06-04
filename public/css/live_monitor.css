@@ -1,0 +1,108 @@
+body {
+
+ background-color:#043c3e;
+ color: white;
+
+}
+
+.info_head {
+ text-align: center;
+ color: white;
+ font-size: 20px;
+ background-color:#04bdc1;
+}
+.info_val {
+ font-family: verdana, arial, helvetica, sans-serif;
+ text-align: center;
+ color: #00FF2B;
+ font-size: 25px;
+}
+.info_waiting_yellow {
+
+ font-family: verdana, arial, helvetica, sans-serif;
+ text-align: center;
+ font-size: 25px;
+ background-color:yellow;
+
+}
+.info_waiting_red {
+
+ font-family: verdana, arial, helvetica, sans-serif;
+ text-align: center;
+ font-size: 25px;
+ background-color:red;
+
+}
+
+#graph_images {
+text-align: center;
+}
+.meter-wrap{
+    background-color:white;
+    border-style:solid;
+    border-width:1px;
+    padding: 2px 2px 2px 2px;
+}
+
+.meter-wrap, .meter-value {
+    /* The width and height of your image */
+     height: 15px;
+     color:black;
+}
+table.current_call th  {
+  background-color:#005658; 
+  color: white;
+ 
+}
+.digital_clock {
+    font-size: 55px; 
+    font-family: "Lucida Sans Unicode","Lucida Grande",sans-serif;
+    text-shadow: 4px 4px 5px #333333;
+    text-align: center;
+}
+.digital_date {
+    font-size: 40px; 
+    font-family: "Lucida Sans Unicode","Lucida Grande",sans-serif;
+    text-shadow: 4px 4px 5px #333333;
+    text-align: center;
+}
+.main_heading {
+  font-size:27px;
+  font-weight:bold;
+  color: white;
+ // background:#005658;
+  
+}
+.agent_info {
+  float: left;
+  font-size:21px;
+  font-weight:bold;
+}
+.select_class {
+ font-size: 15px; 
+  font-weight:bold;
+}
+.missed_extension {
+ font-size: 25px;
+ color: red;
+}
+.ring_extension {
+ font-size: 25px;
+}
+.sub_extension {
+ font-size:20px;
+ font-weight:bold;
+}
+
+.ring_duration {
+ text-align: center;
+ color: white;
+ font-size: 20px;
+ background-color:#04bdc1;
+ width:11%;
+}
+
+TABLE {
+ border-spacing:0;
+}
+

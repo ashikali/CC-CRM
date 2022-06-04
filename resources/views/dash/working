@@ -1,0 +1,225 @@
+@extends('layouts.dashframe')
+
+@section('content')
+<center>
+<table><tr><td>
+<canvas id="myChart1"  width="300" height="300" > </canvas>
+</td>
+<td>
+<canvas id="myChart2"  width="300" height="300" > </canvas>
+</td>
+<td>
+<canvas id="myChart3"  width="300" height="300" > </canvas>
+</td>
+<td>
+<canvas id="myChart4"  width="300" height="300" > </canvas>
+</td>
+</tr>
+</table>
+</center>
+<script>
+
+$(function(){
+
+    //get the doughnut chart canvas
+
+    Chart.pluginService.register({
+
+      beforeDraw: function(chart) {
+
+      var width = chart.chart.width,
+        height = chart.chart.height,
+        ctx = chart.chart.ctx;
+
+    ctx.restore();
+    var fontSize = 1 ;
+    ctx.font = fontSize + "em sans-serif";
+    ctx.textBaseline = "middle";
+
+
+    var total=0;
+    for(var i in chart.config.data.datasets[0].data){ 
+
+	    total += chart.config.data.datasets[0].data[i]; 
+
+    }    
+
+      var text = total; 
+      textX = Math.round((width - ctx.measureText(text).width) / 2),
+      textY = height / 2 - 10;
+
+    ctx.fillText(text, textX, textY);
+    ctx.save();
+       }
+   });     
+
+	
+        var options =  {
+	            responsive: true,
+		    legend: {
+		       position: 'bottom',
+		           },
+		    title: {
+		   	display: true, 
+			text: 'test',
+		     },
+                    animation: {
+                	animateScale: true,
+                	animateRotate: true
+            		},
+		    pieceLabel: {
+			    render: 'value',
+			    fontSize: 14,
+		            fontStyle: 'bold',
+	    		    fontColor: '#000',
+    			    fontFamily: '"Lucida Console", Monaco, monospace'	    
+		           },
+		   elements: {
+		         center: {
+		          text: 'Desktop',
+    			}
+		     }	 
+
+            };
+
+	 var data1 = {
+        labels: ['January', 'February', 'March'],
+        datasets: [
+          {
+            label: 'My First dataset',
+            data: [50, 55, 90],
+            backgroundColor: [
+              '#FF6384',
+              '#36A2EB',
+              '#FFCE56'
+            ]
+          }
+        ]
+      };
+	 var data2 = {
+        labels: ['January', 'February', 'March'],
+        datasets: [
+          {
+            label: 'My First dataset',
+            data: [80, 65, 90],
+            backgroundColor: [
+              '#FF6384',
+              '#36A2EB',
+              '#FFCE56'
+            ]
+          }
+        ]
+      };
+	 var data3 = {
+        labels: ['January', 'February', 'March'],
+        datasets: [
+          {
+            label: 'My First dataset',
+            data: [80, 65, 90],
+            backgroundColor: [
+              '#FF6384',
+              '#36A2EB',
+              '#FFCE56'
+            ]
+          }
+        ]
+      };
+	 var data4 = {
+        labels: ['January', 'February', 'March'],
+        datasets: [
+          {
+            label: 'My First dataset',
+            data: [80, 65, 90],
+            backgroundColor: [
+              '#FF6384',
+              '#36A2EB',
+              '#FFCE56'
+            ]
+          }
+        ]
+      };
+     
+   window.chart1 =  new Chart($("#myChart1"), {
+	             type: "doughnut",
+		     options: options,
+	             data: data1
+		        });
+
+   window.chart2 =  new Chart($("#myChart2"), {
+	             type: "doughnut",
+		     options: options,
+	             data: data2
+		        });
+   window.chart3 =  new Chart($("#myChart3"), {
+	             type: "doughnut",
+		     options: options,
+	             data: data3
+		        });
+   window.chart4 =  new Chart($("#myChart4"), {
+	             type: "doughnut",
+		     options: options,
+	             data: data4
+		        });
+
+    function UpdateData( chart,data,name ){
+	    var newDataset = {  backgroundColor: ["#0da5a0",
+		   				 "#ff0066" ,
+		    			          "#9966ff" ],
+		              data: data };
+	  chart.config.data.datasets.splice(0, 1);
+	  chart.data.datasets.push(newDataset);
+          chart.config.options.title.text = name ;
+          console.log(chart.config.options.title.text);
+	  chart.update(); 	   
+
+    }
+
+    function UpdateChart() {
+
+
+	           $.ajax({
+			          url: 'http://10.10.10.67/ex/api/data.php',
+			          method: 'GET',
+				  dataType: 'json',
+			          success: function (d) {
+
+				  for( var queue in d ){
+
+
+					switch(queue){
+
+						case '500':
+							   UpdateData(window.chart1,d[queue][0],d[queue][1]);
+							   break;
+						case '501':
+							   UpdateData(window.chart2,d[queue][0],d[queue][1]);
+							   break;
+						case '502':
+							   UpdateData(window.chart3,d[queue][0],d[queue][1]);
+							   break;
+						case '503':
+							   UpdateData(window.chart4,d[queue][0],d[queue][1]);
+							   break;
+							
+
+					}
+
+
+				  }
+		  	
+
+				  }	
+        });
+
+    } 
+
+
+    UpdateChart();
+//  setInterval(ajaxCall, 300000);  5 minuts
+//  setInterval(UpdateChart, 5000);  
+
+
+});
+
+</script>
+@stop
