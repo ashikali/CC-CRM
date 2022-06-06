@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Dash;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\PaloDB;
 use App\LiveMonitorInfo;
 use App\Models\Queue;
 use Debugbar;
@@ -18,17 +19,8 @@ class LiveDashController extends Controller {
         $exten_spy =  $_GET['exten_spy'] ?? "";
         $queues = Queue::where('estatus','A')->pluck('queue','id');
         $queues[""] = "All";
-        $rep_info["heading"] ="Testing";
-        Debugbar::info($queues);
-        return view('dash.example',compact('queue_opt','queues','rep_info','exten_spy'));
-
-
-        /*
-
-
-
-        // Conexión a la base de datos CallCenter
-        $reports =  new LiveMonitorInfo($pDB,$myDB);
+        $myDB = "mysql://asterisk:asterisk@localhost/call_center";
+        $reports =  new LiveMonitorInfo($myDB);
 
         $reports->queue_opt = &$queue_opt;
         $rep_info = array();
@@ -36,7 +28,10 @@ class LiveDashController extends Controller {
         $reports->exten_spy = &$exten_spy;
         $reports->bringInfo();
 
-        $queues_tag = $reports->get_queues_tag();
+        debugbar::log($reports->totales);
+
+        $rep_info["heading"] ="Testing";
+        $rep_info["missed_call"] = 5;
 
         $css_waiting = "info_val";
         if($reports->totales["waiting_calls"] > 0 and $reports->totales["waiting_calls"] < 3)
@@ -49,8 +44,8 @@ class LiveDashController extends Controller {
                return json_encode($rep_info);
 
         }
-       return view('dash.livedash',compact("rep_info","queues_tag","queue_opt","exten_spy")); */
+       return view('dash.livedash',compact("rep_info","queues","queue_opt","exten_spy"));
 
-}
+    }
 //
 }

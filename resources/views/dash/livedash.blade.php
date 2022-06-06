@@ -10,7 +10,6 @@
 }
 </style>
 
-
 <table width='100%'>
 <tr>
 <td width="25%">
@@ -23,12 +22,16 @@
 <div class="select_tags">
 <form action="/livedash">
         <input type="text" value="{{$exten_spy}}" name="exten_spy" size="3px">
+        <select class="select_class" id="cbo_estado" name="queue_opt" >
+            @foreach($queues as  $id => $queue)
+                <option value="{{$id}}" {{ $queue_opt === $id ? 'selected' : '' }}>{{ $queue }}</option>
+            @endforeach
+        </select>
         <input type="submit" class="button" value="Go" name="submit">
 </form>
 </div>
 </td>
 </table>
-<!--
 <table width='100%' border=1>
 <tr>
     <td width=25% align="center">
@@ -79,7 +82,7 @@
 </tr>
  </table>
 <br>
-
+<!--
 <div style="float:left;width:20%">
 <center>
         <div id="gentered" class="gauge"></div><br/>
@@ -90,14 +93,11 @@
 </center>
 </div>
 <div style="float:right;width:80%">
-	<div id="agents_ring_info" class="agents_on_ring">
-	{!!$rep_info["agents_ring_info"]!!}
-	</div>
 	<div id="agent_current_calls" class="current_calls_div">
 	{!!$rep_info["agent_current_calls"]!!}
 	</div>
 	<div id="agent_current_breaks" class="current_break_div">
-	{!!$rep_info["agent_current_breaks"] !!}
+	$rep_info["agent_current_breaks"]
 	</div>
 </div>
 <script>
