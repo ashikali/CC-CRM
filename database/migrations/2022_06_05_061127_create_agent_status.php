@@ -20,7 +20,6 @@ return new class extends Migration
 	    $table->integer('on_ready')->default(0);
 	    $table->integer('on_logged_in')->default(0);
 	    $table->primary('queue_id'); 
-	    
         });
     }
 

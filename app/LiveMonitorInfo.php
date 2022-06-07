@@ -82,11 +82,10 @@ class LiveMonitorInfo
 
 
        }else{
-                $queue = $queues[$this->queue_opt];
                 $query = "SELECT on_break on_brk,on_call on_call,
                                  on_ready on_ready,on_logged_in logged_in
                           FROM agent_status
-                          WHERE queue_id='{$queue}'";
+                          WHERE queue_id='{$this->queue_opt}'";
                 $details = $this->_DB->getFirstRowQuery($query,true);
        }
 
@@ -103,7 +102,6 @@ class LiveMonitorInfo
    //Queue Info
 	 if(is_null($date))
  	 	$date= date("Y-m-d");
-     $date = '2022-05-29';
 
    	 $this->where_con = (empty($this->queue_opt))? '': " AND id_queue_call_entry={$this->queue_opt}";
    	 $query = "
@@ -153,20 +151,19 @@ class LiveMonitorInfo
    	            	 convert(datetime_entry_queue,date)= '{$date}'
 			      {$this->where_con}";
 
-   	 $result=$this->_DB->getFirstRowQuery($query);
+   	 $result=$this->_DB->getFirstRowQuery($query,true);
    	 if($result==FALSE){
    	         $this->errMsg = $this->_DB->errMsg;
    	         return null;
    	 }
+	 if(empty($result["ACD"]))
+	    $result["ACD"] = $result["MAX"] = $result["AVG"] = 0;
 
-	 if(empty($result[0]))
-	    $result[0] = $result[1] = $result[2] = $result[3] = "0" ;
-
-	 if($result[0] < 0 )
-			$result[0] = 0;
-   	 $this->totales["avg_call_time"] = $this->sec2HHMMSS($result[0]);
-   	 $this->totales["max_wait_time"] = $this->sec2HHMMSS($result[1]);
-   	 $this->totales["avg_wait_time"] = $this->sec2HHMMSS($result[2]);
+	 if($result["ACD"] < 0 )
+			$result["ACD"] = 0;
+   	 $this->totales["avg_call_time"] = $this->sec2HHMMSS(round($result["ACD"]));
+   	 $this->totales["max_wait_time"] = $this->sec2HHMMSS(round($result["MAX"]));
+   	 $this->totales["avg_wait_time"] = $this->sec2HHMMSS(round($result["AVG"]));
 
   }
 
@@ -197,16 +194,16 @@ class LiveMonitorInfo
      $this->where_con = (empty($this->queue_opt))? '': " AND id_queue_call_entry = '$this->queue_opt'";
      $query = "
  		SELECT
- 			distinct(agent.number),agent.name,callerid,
+ 			distinct(agent.number) number,agent.name,callerid,
             UNIX_TIMESTAMP(now()) - UNIX_TIMESTAMP(cce.datetime_init) as duration,
-            cce.datetime_init,'SIP/1000'
+            cce.datetime_init,CONCAT('SIP/',agent.number) as extension
         FROM
  			current_call_entry as cce,agent
  		WHERE
  			agent.id=cce.id_agent
  			$this->where_con
  		ORDER BY cce.datetime_init desc";
-     $result=$this->_DB->fetchTable($query);
+     $result=$this->_DB->fetchTable($query,true);
 
      if(is_null($result)){
              $this->errMsg = $this->_DB->errMsg;
@@ -218,11 +215,22 @@ class LiveMonitorInfo
     //$result[] = array("7001","mtaher","234234",32);
 
     $current_call_tag = "
- <br><div class=agent_info>الموظفين في وضع الاتصال</div>
+ <br><div class=agent_info>Call Information</div>
  <table width=100% border=1>
- <tr><td width=2% align=center><img src=img/telephone_ans.gif width=50px height=50px></td><th class=info_head>رقم الموظف</th><th class=info_head>رقم التحويله</th><th class=info_head>اسم الموظف</th><th class=info_head>رقم المتصل</th><th class=info_head>مدة المكالمة</th></tr>";
+ <tr><td width=2% align=center><img src=img/telephone_ans.gif width=50px height=50px></td>
+ <th class=info_head>Agent Name</th>
+ <th class=info_head>Agent Number</th>
+ <th class=info_head>Extension</th>
+ <th class=info_head>Caller ID</th>
+ <th class=info_head>Duration</th>";
 
-    $current_call_row = "<tr><td class=info_val><a href='http://10.50.33.43/chan_spy.php?exten_spy=%s&agent_id=%s' target='_blank'><img src=img/agent_on_call.png width=50px height=50px></a></td><td class=info_val>%s</td><td class=info_val>%s</td><td class=info_val>%s</td><td class=info_val>%s</td><td>
+    $current_call_row = "<tr>
+    <td class=info_val><a href='http://10.20.50.223/chan_spy.php?exten_spy=%s&agent_number=%s' target='_blank'><img src=img/agent_on_call.png width=50px height=50px></a></td>
+    <td class=info_val>%s</td>
+    <td class=info_val>%s</td>
+    <td class=info_val>%s</td>
+    <td class=info_val>%s</td>
+    <td>
  <div class='meter-wrap'>
          <div style='background-color: #00ff00'>
      <div class='meter-value' style='background-color: #ff0000; width: %s;'>%s</div>
@@ -232,12 +240,13 @@ class LiveMonitorInfo
     $content = "" ;
     foreach($result as $in => $row) {
 
-	    $duration = $row[3];
+	    $duration = $row['duration'];
 	    $row[3] = $duration/1800 * 100;
 	    $row[4] = $this->sec2HHMMSS($duration);
  	    if($row[3] > 100 )
  	         $row[3] = 100; //just for align if it should not go beyond
- 	$content = $content.sprintf($current_call_row,$this->exten_spy,$row[0],$row[0],$row[5],$row[1],$row[2],ceil($row[3])."%",$row[4]);
+ 	$content = $content.sprintf($current_call_row,$this->exten_spy,$row['number'],$row['name'],$row['number'],$row['extension'],
+         $row['callerid'],ceil($row[3])."%",$row[4]);
    }
 
     $this->totales["agent_current_calls"] = $current_call_tag.$content."</table>";
@@ -248,16 +257,14 @@ class LiveMonitorInfo
 
   function bring_break_info() {
 
-     $this->where_con = (empty($this->queue_opt))? '': "AND alq.id_queue = '$this->queue_opt'";
-     $query = "SELECT
-  		agent.number,agent.name,DATEDIFF(SECOND,alq.modifiedon,GETDATE()) as duration,alq.in_chan,alq.in_chan
-               FROM
-  		agent_logged_queue alq JOIN agent ON alq.id_agent=agent.id
-	       WHERE
-		alq.status = 'inbreak'
-		{$this->where_con}
-              ORDER BY alq.modifiedon";
-      $result=$this->_DB->fetchTable($query);
+    # $this->where_con = (empty($this->queue_opt))? '': "AND alq.id_queue = '$this->queue_opt'";
+     $query = "
+     SELECT  agent.name,agent.number,
+            UNIX_TIMESTAMP(now()) - UNIX_TIMESTAMP(datetime_init) as duration,CONCAT('SIP/',agent.number) as extension
+     FROM    audit,agent
+     WHERE   audit.id_agent=agent.id AND audit.id_break IS NOT NULL AND audit.datetime_end IS NULL AND audit.datetime_init IS NOT NULL                ORDER BY agent.name;
+     ";
+      $result=$this->_DB->fetchTable($query,true);
       if(is_null($result)){
               $this->errMsg = $this->_DB->errMsg;
               return null;
@@ -265,10 +272,14 @@ class LiveMonitorInfo
     if(count($result) > 0 ) {
 
         $current_break_tag = "
-  <br><div class=agent_info>الموظفين في وضع الراحة</div>
-   <table width=100% border=1> <tr><td width=3% align=center><img src=img/agent_break_head.jpg width=50px height=50px></td><th class=info_head>رقم الموظف</th><th class=info_head>رقم التحويلة</th><th class=info_head> اسم الموظف</th><th class=info_head>مدة وقت الراحة</th></tr>";
+  <br><div class=agent_info>Agents On Break</div>
+   <table width=100% border=1>
+   <tr><td width=3% align=center><img src=img/agent_break_head.jpg width=50px height=50px></td>
+       <th class=info_head>Agent Name</th><th class=info_head>Agent Number</th>
+       <th class=info_head>Extension</th><th class=info_head>Duration</th></tr>";
 
-        $current_break_row = "<tr><td class=info_val><img src=img/agent_on_break.jpg width=50px height=50px></td><td class=info_val>%s</td><td class=info_val>%s</td><td class=info_val>%s</td><td>
+        $current_break_row = "<tr><td class=info_val><img src=img/agent_on_break.jpg width=50px height=50px></td>
+                              <td class=info_val>%s</td><td class=info_val>%s</td><td class=info_val>%s</td><td>
      <div class='meter-wrap'>
              <div style='background-color: #00ff00'>
          <div class='meter-value' style='background-color: #ff0000; width: %s;'>%s</div>
@@ -277,12 +288,12 @@ class LiveMonitorInfo
      </td></tr>";
         $content = "" ;
         foreach($result as $in => $row) {
-	    $duration = $row[2];
+	        $duration = $row['duration'];
             $row[2] = $duration/1800 * 100;
             $row[3] = $this->sec2HHMMSS($duration);
   	    if($row[2] > 100 )
   	         $row[2] = 100; //just for align if it should not go beyond
-            $content = $content.sprintf($current_break_row,$row[0],$row[4],$row[1],$row[2]."%",$row[3]);
+            $content = $content.sprintf($current_break_row,$row['name'],$row['number'],$row['extension'],$row[2]."%",$row[3]);
         }
         $this->totales["agent_current_breaks"] = $current_break_tag.$content."</table>";
 
@@ -291,70 +302,56 @@ class LiveMonitorInfo
         $this->totales["agent_current_breaks"] = "";
   }
 
-  function bring_ring_info() {
-
+  function bring_waiting_info() {
 
 	$date = date("Y-m-d");
-     	$this->where_con = (empty($this->queue_opt))? '': "AND id_queue_call_entry = '$this->queue_opt'";
-	$query = "SELECT callerid,DATEDIFF(SECOND,datetime_entry_queue,GETDATE()),ext_ringing,ext_ringagent,ext_noanswer,ext_noansweragent
-		  FROM call_entry WHERE  status='en-cola'  and convert(date,datetime_entry_queue) = '$date' {$this->where_con} order by id";
+   	$this->where_con = (empty($this->queue_opt))? '': "AND id_queue_call_entry = '$this->queue_opt'";
+
+	$query = "SELECT callerid,UNIX_TIMESTAMP(now()) - UNIX_TIMESTAMP(datetime_entry_queue) as duration
+		      FROM call_entry
+              WHERE  status='en-cola'
+                     and convert(datetime_entry_queue,date) = '$date' {$this->where_con} order by id";
 
 
-	$result = $this->_DB->fetchTable($query);
+	$result = $this->_DB->fetchTable($query,true);
 
-
-
-	  if(count($result) > 0 ) {
+    if(count($result) > 0 ) {
 
         $ring_tag = "
-  <br><div class=agent_info>مكالمات الانتظار</div>
+  <br><div class=agent_info>Waiting Calls</div>
      <table width=100% border=1>
      <tr>
 	<th width=3% align=center><img src=img/calls_waiting.png width=50px height=50px></th>
-	<th class=info_head>رقم المتصل</th>
-	<th class=info_head>الموظف المستلم للمكالمة </th><th class=info_head>الموظف لايرد على المكالمة </th><th class=ring_duration>مدة الانتظار</th>
+	<th class=info_head>Caller id</th>
+	<th class=info_head>Waiting Duration</th>
 	</tr>";
 
-        $ring_row = "<tr><td class=meter-wrap><img src=img/%s width=50px height=50px></td><td class=info_val>%s</td>
-<td >%s</td><td >%s</td>
-<td>
-     <div class='meter-wrap'>
-             <div style='background-color: #00ff00'>
-         <div class='meter-value' style='background-color: #ff0000; width: %s;'>%s</div>
-              </div>
-             </div>
-     </td>
-</td>
-</tr>";
+        $ring_row = "<tr>
+                         <td class=meter-wrap><img src=img/queue_waiting.png width=50px height=50px></td>
+                         <td class=info_val>%s</td>
+                         <td>
+                             <div class='meter-wrap'>
+                                     <div style='background-color: #00ff00'>
+                                 <div class='meter-value' style='background-color: #ff0000; width: %s;'>%s</div>
+                                      </div>
+                             </div>
+                         </td>
+                    </tr>";
+
         $content = "" ;
         foreach($result as $in => $row) {
 
-
 	    $image = "queue_waiting.png";
-	    $callerid = $row[0];
-            $duration = (int)$row[1];
+	    $callerid = $row['callerid'];
+        $duration = (int)$row['duration'];
 	    if($duration < 0 )
 			$duration = 0;
-            $percentage = ceil($duration/1800 * 100);
-            $duration_time = $this->sec2HHMMSS($duration);
-	    $ringing_ext = $row[2];
-	    $ringing_agent = $row[3];
-	    $missed_ext = $row[4]; //4
-	    $missed_agent = $row[5]; //5
-	    if(!empty($ringing_ext)){
-		$image = "telephone_ring.gif";
-		$ringing_agent = "<font class=ring_extension>{$ringing_agent}</font>&nbsp;&nbsp;&nbsp;<font class=sub_extension>Ext.{$ringing_ext}</font>";
-	     }
+        $percentage = ceil($duration/1800 * 100);
+        $duration_time = $this->sec2HHMMSS($duration);
+        if($percentage > 100 )
+           $percentage = 100; //just for align if it should not go beyond
+        $content = $content.sprintf($ring_row,$callerid,$percentage."%",$duration_time);
 
-	    if(!empty($missed_ext)) {
-
-		$missed_agent = "<font class=missed_extension>{$missed_agent}</font>&nbsp;&nbsp;&nbsp;<font class=sub_extension>Ext.{$missed_ext}</font>";
-
-	    }
-
-            if($percentage > 100 )
-                 $percentage = 100; //just for align if it should not go beyond
-            $content = $content.sprintf($ring_row,$image,$callerid,$ringing_agent,$missed_agent,$percentage."%",$duration_time);
         }
         $this->totales["agents_ring_info"] = $ring_tag.$content."</table>";
 
@@ -370,8 +367,9 @@ class LiveMonitorInfo
 
      $this->bring_agent_info();
      $this->bring_queue_info();
+     $this->bring_waiting_info();
      $this->bring_current_call_info();
-     #$this->bring_break_info();
+     $this->bring_break_info();
 
  }
 }

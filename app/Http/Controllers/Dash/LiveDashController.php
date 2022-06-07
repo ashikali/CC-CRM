@@ -8,6 +8,7 @@ use App\PaloDB;
 use App\LiveMonitorInfo;
 use App\Models\Queue;
 use Debugbar;
+use DB;
 
 
 
@@ -17,7 +18,8 @@ class LiveDashController extends Controller {
 
         $rep_info = Array(); $queue_opt = $request->input('queue_opt') ?? "" ;
         $exten_spy =  $_GET['exten_spy'] ?? "";
-        $queues = Queue::where('estatus','A')->pluck('queue','id');
+        $queues = Queue::select(DB::raw("CONCAT(queue,' ',description) as name"),'id')
+                               ->where('estatus','A')->pluck('name','id');
         $queues[""] = "All";
         $myDB = "mysql://asterisk:asterisk@localhost/call_center";
         $reports =  new LiveMonitorInfo($myDB);
@@ -30,7 +32,7 @@ class LiveDashController extends Controller {
 
         debugbar::log($reports->totales);
 
-        $rep_info["heading"] ="Testing";
+        $rep_info["heading"] = $queues[$queue_opt];
         $rep_info["missed_call"] = 5;
 
         $css_waiting = "info_val";

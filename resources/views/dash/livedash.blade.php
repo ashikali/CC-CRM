@@ -13,7 +13,7 @@
 <table width='100%'>
 <tr>
 <td width="25%">
-<div class="agent_info">معلومات الموظفين</div>
+<div class="agent_info">Agent Information</div>
 </td>
 <td width="50%" align="center">
 <span class="main_heading">{{$rep_info["heading"]}}</span>
@@ -36,71 +36,79 @@
 <tr>
     <td width=25% align="center">
 	<table border=1>
-	<tr><td rowspan=2 style="background-color:white"><img src=img/agent_online.png width=50px height=50px></td><th  width=100% class="info_head">الموظفين الحاليين</th></tr>
+	<tr><td rowspan=2 style="background-color:white"><img src=img/agent_online.png width=50px height=50px></td>
+        <th  width=100% class="info_head">Agent Logged In  </th></tr>
 	<tr><td class="info_val"><label id="agent_logged_in">{{$rep_info["agent_logged_in"]}}</label></td></tr>
         </table>
     </td>
     <td width=25%>
     <table border=1><tr><td rowspan=2 style="background-color:white"><img src=img/agent_on_break.jpg width=50px height=50px></td>
-		<th  width=100% class="info_head">الموظفين في وضع الراحة</th></tr>
+		<th  width=100% class="info_head">Agent on Break</th></tr>
 	       <tr><td class="info_val"><label id="agent_on_brk">{{$rep_info["agent_on_brk"]}}</label></td></tr>
         </table>
     </td>
     <td width=25%>
-        <table border=1><tr><td rowspan=2 style="background-color:white"><img src=img/avg_call_time.jpg width=50px height=50px></td><th  width=100% class="info_head">معدل وقت المكالمة</th></tr>
+        <table border=1><tr><td rowspan=2 style="background-color:white"><img src=img/avg_call_time.jpg width=50px height=50px></td>
+         <th  width=100% class="info_head">Avg. Call Time </th></tr>
 	       <tr><td class="info_val"><span id="avg_call_time">{{$rep_info["avg_call_time"]}}</span></td></tr>
         </table>
     </td>
     <td width=25% align="center">
-        <table border=1><tr><td rowspan=2 style="background-color:white"><img src=img/missed_call.jpg width=50px height=50px></td><th  width=100% class="info_head">مكالمات لم يرد عليها</th></tr>
+        <table border=1><tr><td rowspan=2 style="background-color:white"><img src=img/missed_call.jpg width=50px height=50px></td>
+            <th  width=100% class="info_head">Missed Calls</th></tr>
 	       <tr><td class="info_val"><label id="missed_call">{{$rep_info["missed_call"]}}</label></td></tr>
         </table>
     </td>
 </tr>
 <tr>
     <td width=25%>
-        <table border=1><tr><td rowspan=2 style="background-color:white"><img src=img/agent_ready.png width=50px height=50px></td><th  width=100% class="info_head">الموظفين في وضع الاستعداد</th></tr>
+        <table border=1><tr><td rowspan=2 style="background-color:white"><img src=img/agent_ready.png width=50px height=50px></td>
+           <th  width=100% class="info_head">Agent on ready</th></tr>
 	       <tr><td class="info_val"><label id="agent_on_ready">{{$rep_info["agent_on_ready"]}}</label></td></tr>
         </table>
     </td>
     <td width=25%>
-        <table border=1><tr><td rowspan=2 style="background-color:white"><img src=img/agent_on_call.png width=50px height=50px></td><th  width=100% class="info_head">الموظفين في وضع الاتصال</th></tr>
+        <table border=1><tr><td rowspan=2 style="background-color:white"><img src=img/agent_on_call.png width=50px height=50px></td>
+           <th  width=100% class="info_head">Agent on call</th></tr>
 	       <tr><td class="info_val"><label id="agent_on_call">{{$rep_info["agent_on_call"]}}</label></td></tr>
         </table>
     </td>
     <td width=25% align="center">
-        <table border=1><tr><td rowspan=2 style="background-color:white"><img src=img/waiting2.png width=50px height=50px></td><th  width=100% class="info_head">معدل وقت الانتظار</th></tr>
+        <table border=1><tr><td rowspan=2 style="background-color:white"><img src=img/waiting2.png width=50px height=50px></td>
+           <th  width=100% class="info_head">Average Wait Time</th></tr>
 	       <tr><td class="info_val"><label id="avg_wait_time">{{$rep_info["avg_wait_time"]}}</label></td></tr>
         </table>
     </td>
     <td width=25% align="center">
-        <table border=1><tr><td rowspan=2 style="background-color:white"><img src=img/waiting0.png width=50px height=50px></td><th  width=100% class="info_head">اطول وقت انتظار
-</td></th>
+        <table border=1><tr><td rowspan=2 style="background-color:white"><img src=img/waiting0.png width=50px height=50px></td>
+            <th  width=100% class="info_head">Maximum Wait Time</th></tr>
 	       <tr><td class="info_val"><label id="max_wait_time">{{$rep_info["max_wait_time"]}}</label></td></tr>
         </table>
     </td>
 </tr>
  </table>
 <br>
-<!--
 <div style="float:left;width:20%">
 <center>
         <div id="gentered" class="gauge"></div><br/>
         <div id="gwaiting_calls" class="gauge"></div><br/>
         <div id="gabandoned" class="gauge"></div><br/>
         <div id="ganswered" class="gauge"></div><br/>
-        <div id="VoiceMailSMS" class="gauge"></div><br/>
 </center>
 </div>
 <div style="float:right;width:80%">
+    <div id="agents_ring_info" class="agents_on_ring">
+        {!!$rep_info["agents_ring_info"]!!}
+    </div>
 	<div id="agent_current_calls" class="current_calls_div">
-	{!!$rep_info["agent_current_calls"]!!}
+	    {!!$rep_info["agent_current_calls"]!!}
 	</div>
 	<div id="agent_current_breaks" class="current_break_div">
-	$rep_info["agent_current_breaks"]
+	    {!!$rep_info["agent_current_breaks"]!!}
 	</div>
 </div>
 <script>
+<!--
 $(document).ready(function () {
 
 
@@ -128,7 +136,7 @@ $(document).ready(function () {
           value: "{!! $rep_info["entered"] !!}",
           min: 0,
           max: 2000,
-	  title: "{{trans('messages.Entered')}}",
+	  title: "Entered",
 	  titleFontColor: "white",
 	  valueFontColor: window.chartColors.lgreen,
 	  pointer: true,
@@ -150,7 +158,7 @@ $(document).ready(function () {
           value: "{!! $rep_info["waiting_calls"] !!}",
           min: 0,
           max: 10,
-          title: "{{trans('messages.Waiting Calls')}}",
+          title: "Waiting Calls",
 	  titleFontColor: "white",
 	  valueFontColor: window.chartColors.lgreen,
 	  pointer: true,
@@ -172,7 +180,7 @@ $(document).ready(function () {
           value: "{!! $rep_info["abandoned"] !!}",
           min: 0,
           max: 100,
-          title: "{{trans('messages.Abandoned Calls')}}",
+          title: "Abandoned Calls",
 	  titleFontColor: "white",
 	  valueFontColor: window.chartColors.red,
 	  pointer: true,
@@ -194,7 +202,7 @@ $(document).ready(function () {
           min: 0,
           max: 2000,
 	  valueFontColor: window.chartColors.lgreen,
-          title: "{{trans('messages.Answered Calls')}}",
+          title: "Answered Calls",
 	  titleFontColor: "white",
 	  pointer: true,
 	  pointerOptions: {
@@ -209,30 +217,6 @@ $(document).ready(function () {
 	  hideMinMax: true,
 
      });
-  window.charts["VoiceMailSMS"] = new JustGage({
-
-	  id: "VoiceMailSMS",
-          value: "{!! $rep_info["failover"] !!}",
-          min: 0,
-          max: 2000,
-	  valueFontColor: window.chartColors.lgreen,
-          title: "{{trans('messages.VoiceMailSMS')}}",
-	  titleFontColor: "white",
-	  titleMinFontSize: 10,
-	  pointer: true,
-	  pointerOptions: {
-	      toplength: 5,
-	      bottomlength: 8,
-	      bottomwidth: 5,
-	      color: window.chartColors.red,
-          },
-	  gaugeColor: window.chartColors.yellow,
-          levelColors: [window.chartColors.dgreen],
-	  levelColorsGradient:true,
-	  hideMinMax: true,
-
-     });
-
 
     function UpdateChart() {
 
@@ -246,7 +230,6 @@ $(document).ready(function () {
 		     	  window.charts["gabandoned"].refresh(rep_info["abandoned"]);
 		     	  window.charts["gwaiting_calls"].refresh(rep_info["waiting_calls"]);
 		     	  window.charts["gentered"].refresh(rep_info["entered"]);
-		     	  window.charts["VoiceMailSMS"].refresh(rep_info["failover"]);
 		     	  $("#agents_ring_info").html(rep_info["agents_ring_info"]);
 		     	  $("#agent_current_calls").html(rep_info["agent_current_calls"]);
 		     	  $("#agent_current_breaks").html(rep_info["agent_current_breaks"]);
@@ -263,7 +246,7 @@ $(document).ready(function () {
      });
 
    }
- setInterval(UpdateChart,10000);
+ setInterval(UpdateChart,5000);
 
 });
 -->
