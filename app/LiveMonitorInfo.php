@@ -31,8 +31,8 @@ namespace App;
 #include_once("libs/paloSantoDB.class.php");
 
 /* Clase que implementa campaña (saliente por ahora) de CallCenter (CC) */
-class LiveMonitorInfo
-{
+class LiveMonitorInfo {
+
     var $_DB; // instancia de la clase paloDB
     var $errMsg;
     var $queue_opt,$exten_spy;
