@@ -21,8 +21,8 @@ class LiveDashController extends Controller {
         $queues = Queue::select(DB::raw("CONCAT(queue,' ',description) as name"),'id')
                                ->where('estatus','A')->pluck('name','id');
         $queues[""] = "All";
-        $myDB = "mysql://asterisk:asterisk@localhost/call_center";
-        $reports =  new LiveMonitorInfo($myDB);
+	$dsn = env('DB_DSN');
+        $reports =  new LiveMonitorInfo($dsn);
 
         $reports->queue_opt = &$queue_opt;
         $rep_info = array();

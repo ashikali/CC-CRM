@@ -3,7 +3,7 @@ namespace App;
 
 use PDO;
 
-class paloDB {
+class PaloDB {
 
     var $conn;          // Referencia a la conexion activa a la DB
     var $connStatus;    // Se asigna a VERDADERO si ocurrió error de DB

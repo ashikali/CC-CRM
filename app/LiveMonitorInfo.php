@@ -31,6 +31,7 @@ namespace App;
 #include_once("libs/paloSantoDB.class.php");
 
 /* Clase que implementa campaña (saliente por ahora) de CallCenter (CC) */
+
 class LiveMonitorInfo {
 
     var $_DB; // instancia de la clase paloDB
@@ -43,7 +44,7 @@ class LiveMonitorInfo {
             $this->_DB = $pDB;
         else {
             $dsn = (string)$pDB;
-            $this->_DB = new paloDB($dsn);
+            $this->_DB = new PaloDB($dsn);
 
             if (!$this->_DB->connStatus) {
                 $this->errMsg = $this->_DB->errMsg;
