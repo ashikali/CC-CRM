@@ -6,7 +6,7 @@
 </head>
 <body>
 <div class="container">
-    <form method="POST" action="{{ route("csat.store",$uniqueid) }}" enctype="multipart/form-data">
+    <form method="POST" action="{{ route("csat.store",[ $survey->id,$uniqueid ]) }}" enctype="multipart/form-data">
 	@csrf
 	@if(session('success'))
 		<div class="alert alert-success">{{session('success')}}</div>

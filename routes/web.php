@@ -48,8 +48,8 @@ Route::group(['prefix' => 'profile', 'as' => 'profile.', 'namespace' => 'Auth', 
 });
 //for survey submit
 Route::group(['prefix' => 'csat', 'as' => 'csat.','namespace' => 'CSAT'], function () {
-    Route::get('submit/{uniqueid}','EntriesController@entry')->name('entry');
-    Route::post('store/{uniqueid}','EntriesController@store')->name('store');
+    Route::get('submit/{surveyid}/{uniqueid}','EntriesController@entry')->name('entry');
+    Route::post('store/{surveyid}/{uniqueid}','EntriesController@store')->name('store');
     Route::get('answers','ReportController@answers')->name('answers');
 });
 

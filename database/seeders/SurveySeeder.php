@@ -16,7 +16,9 @@ class SurveySeeder extends Seeder
      */
     public function run(){
 
-	 $survey = Survey::create(['name' => 'Your feedback is important to us','settings' => ['accept-guest-entries' => true]]);
+
+
+	$survey = Survey::create(['name' => 'Your feedback is important to us','settings' => ['accept-guest-entries' => true]]);
 
 	$one = $survey->sections()->create(['name' => 'About the Agent']);
 
@@ -25,7 +27,7 @@ class SurveySeeder extends Seeder
 	    'type' => 'radio',
 	    'rules' => ['sometimes', 'in:Satisfied,Not Satisfied'],
 	    'options' => ['Satisfied', 'Not Satisfied']
-	]);
+	]); 
 
 	$two = $survey->sections()->create(['name' => 'Overall Experience']);
 	$two->questions()->create([

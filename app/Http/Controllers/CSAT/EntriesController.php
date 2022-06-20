@@ -13,14 +13,14 @@ use Debugbar;
 
 class EntriesController extends Controller {
 
-    public function entry($uniqueid){
+    public function entry($surveyid,$uniqueid){
 
         $count = AbandonedCall::where('uniqueid',$uniqueid)->count(); //Check if the survey has call uniqueid
         abort_if($count < 1, Response::HTTP_FORBIDDEN, '403 Forbidden');
         $count = Entry::where('uniqueid',$uniqueid)->count(); //Survey already finished for that call
         abort_if($count > 0, Response::HTTP_FORBIDDEN, '403 Forbidden');
-
-        $survey = $this->getSurvey();
+        $survey = $this->getSurvey($surveyid);
+        abort_if(empty($survey) > 0, Response::HTTP_FORBIDDEN, '403 Forbidden');
         return view('csat.submit',[ 'survey' => $survey,'uniqueid' => $uniqueid ]);
 
 
@@ -38,9 +38,9 @@ class EntriesController extends Controller {
           return view('csat.after_submit')->with('success','Thank you for your submit');
 
     }
-    protected function getSurvey(){
+    protected function getSurvey($id){
 
-            return Survey::where('name','Your feedback is important to us')->first();
+            return Survey::where('id',$id)->first();
 
     }
 

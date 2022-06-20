@@ -14,7 +14,7 @@ return new class extends Migration
     public function up(){
 
         Schema::table('queue_call_entry', function (Blueprint $table) {
-           $table->string('description')->after('queue');
+           $table->string('description')->default('')->after('queue');
         });
 
     }
