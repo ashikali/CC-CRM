@@ -24,7 +24,7 @@
         <input type="text" value="{{$exten_spy}}" name="exten_spy" size="3px">
         <select class="select_class" id="cbo_estado" name="queue_opt" >
             @foreach($queues as  $id => $queue)
-                <option value="{{$id}}" {{ $queue_opt === $id ? 'selected' : '' }}>{{ $queue }}</option>
+                <option value="{{$id}}" {{ $queue_opt == $id ? 'selected' : '' }}>{{ $queue }}</option>
             @endforeach
         </select>
         <input type="submit" class="button" value="Go" name="submit">
@@ -108,7 +108,6 @@
 	</div>
 </div>
 <script>
-<!--
 $(document).ready(function () {
 
 
@@ -222,7 +221,7 @@ $(document).ready(function () {
 
 
         $.ajax({
-                       url: "livedash?queue={{$queue_opt}}&exten_spy={{$exten_spy}}",
+                       url: "livedash?queue_opt={{$queue_opt}}&exten_spy={{$exten_spy}}",
                        method: 'GET',
                        dataType: 'json',
                        success: function (rep_info) {
@@ -249,5 +248,4 @@ $(document).ready(function () {
  setInterval(UpdateChart,5000);
 
 });
--->
 </script>

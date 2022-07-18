@@ -14,13 +14,14 @@ use DB;
 
 class LiveDashController extends Controller {
 
+
     public function livedash(Request $request){
 
-        $rep_info = Array(); $queue_opt = $request->input('queue_opt') ?? "" ;
+        $rep_info = Array(); $queue_opt = $request->input('queue_opt') ?? 0;
         $exten_spy =  $_GET['exten_spy'] ?? "";
         $queues = Queue::select(DB::raw("CONCAT(queue,' ',description) as name"),'id')
                                ->where('estatus','A')->pluck('name','id');
-        $queues[""] = "All";
+        $queues["0"] = "All";
 	$dsn = env('DB_DSN');
         $reports =  new LiveMonitorInfo($dsn);
 
@@ -29,8 +30,6 @@ class LiveDashController extends Controller {
         $reports->totales = &$rep_info ;
         $reports->exten_spy = &$exten_spy;
         $reports->bringInfo();
-
-        debugbar::log($reports->totales);
 
         $rep_info["heading"] = $queues[$queue_opt];
         $rep_info["missed_call"] = 5;
@@ -44,10 +43,9 @@ class LiveDashController extends Controller {
         $rep_info["css_waiting"] = $css_waiting;
         if($request->ajax()){
                return json_encode($rep_info);
-
         }
        return view('dash.livedash',compact("rep_info","queues","queue_opt","exten_spy"));
 
     }
-//
+
 }

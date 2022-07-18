@@ -7,8 +7,8 @@ use Illuminate\Database\Seeder;
 use MattDaneshvar\Survey\Models\Survey;
 
 
-class SurveySeeder extends Seeder
-{
+class SurveySeeder extends Seeder {
+
     /**
      * Run the database seeds.
      *
@@ -16,12 +16,8 @@ class SurveySeeder extends Seeder
      */
     public function run(){
 
-
-
 	$survey = Survey::create(['name' => 'Your feedback is important to us','settings' => ['accept-guest-entries' => true]]);
-
 	$one = $survey->sections()->create(['name' => 'About the Agent']);
-
 	$one->questions()->create([
 	    'content' => 'Kindly share your experience with the agent',
 	    'type' => 'radio',

@@ -54,7 +54,7 @@ class LiveMonitorInfo {
             }
         }
        $this->agent_on_breaks = false ;
-       $this->queue_opt = "";
+       $this->queue_opt = "0";
     }
    function bring_count_info($query) {
 
@@ -73,23 +73,11 @@ class LiveMonitorInfo {
         $this->totales[ "agent_on_ready" ]  = 0 ;
         $this->totales[ "agent_logged_in" ] = 0 ;
 
-       if( empty($this->queue_opt)) {
-
-                $query = "SELECT sum(on_break) on_brk,sum(on_call) on_call,
-                                 sum(on_ready) on_ready,sum(on_logged_in) logged_in
-                          FROM agent_status";
-
-                $details = $this->_DB->getFirstRowQuery($query,true);
-
-
-       }else{
-                $query = "SELECT on_break on_brk,on_call on_call,
-                                 on_ready on_ready,on_logged_in logged_in
-                          FROM agent_status
-                          WHERE queue_id='{$this->queue_opt}'";
-                $details = $this->_DB->getFirstRowQuery($query,true);
-       }
-
+        $query = "SELECT on_break on_brk,on_call on_call,
+                         on_ready on_ready,on_logged_in logged_in
+                  FROM agent_status
+                  WHERE queue_id='{$this->queue_opt}'";
+        $details = $this->_DB->getFirstRowQuery($query,true);
         if(!empty($details)){
 
                 foreach($details as $key => $value )
@@ -120,7 +108,7 @@ class LiveMonitorInfo {
    	 $this->totales["abandoned"]=0;
    	 $this->totales["waiting_calls"]=0;
    	 $this->totales["answered"]=0;
-     $this->totales["failover"]=0;
+     	 $this->totales["failover"]=0;
 
 
 	 foreach($result_queue as $key=>$data) {
@@ -144,8 +132,8 @@ class LiveMonitorInfo {
 
    	 $query =   "SELECT
                 	AVG(duration) as ACD,
-			        MAX(duration_wait) as MAX,
-			        AVG(duration_wait) as AVG
+			MAX(duration_wait) as MAX,
+			AVG(duration_wait) as AVG
    	             FROM
    	     		    call_entry
    	             WHERE
@@ -263,7 +251,7 @@ class LiveMonitorInfo {
      SELECT  agent.name,agent.number,
             UNIX_TIMESTAMP(now()) - UNIX_TIMESTAMP(datetime_init) as duration,CONCAT('SIP/',agent.number) as extension
      FROM    audit,agent
-     WHERE   audit.id_agent=agent.id AND audit.id_break IS NOT NULL AND audit.datetime_end IS NULL AND audit.datetime_init IS NOT NULL                ORDER BY agent.name;
+     WHERE   audit.id_agent=agent.id AND audit.id_break IS NOT NULL AND audit.datetime_end IS NULL AND audit.datetime_init IS NOT NULL ORDER BY agent.name
      ";
       $result=$this->_DB->fetchTable($query,true);
       if(is_null($result)){
