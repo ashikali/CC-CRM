@@ -68,7 +68,7 @@
                 <ul class="c-sidebar-nav-dropdown-items">
                     @can('csat_report')
                         <li class="c-sidebar-nav-item">
-                            <a href="{{ route("csat.answers") }}" class="c-sidebar-nav-link {{ request()->is("csat/answers") || request()->is("csat/answers*") ? "c-active" : "" }}">
+                            <a href="{{ route("admin.answers") }}" class="c-sidebar-nav-link {{ request()->is("admin/answers") || request()->is("admin/answers*") ? "c-active" : "" }}">
                                 <i class="fa-fw fas fa-external-link-alt c-sidebar-nav-icon">
 
                                 </i>

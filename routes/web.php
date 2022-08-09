@@ -36,6 +36,13 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'namespace' => 'Admin', 'mi
     // Contact
     Route::delete('contacts/destroy', 'ContactController@massDestroy')->name('contacts.massDestroy');
     Route::resource('contacts', 'ContactController');
+ 
+    // CSAT Answers 
+    Route::get('answers','ReportController@answers')->name('answers');
+
+    //Live Dash
+    Route::get('livedash','LiveDashController@livedash')->name('livedash');
+     
 });
 Route::group(['prefix' => 'profile', 'as' => 'profile.', 'namespace' => 'Auth', 'middleware' => ['auth']], function () {
     // Change password
@@ -50,7 +57,5 @@ Route::group(['prefix' => 'profile', 'as' => 'profile.', 'namespace' => 'Auth', 
 Route::group(['prefix' => 'csat', 'as' => 'csat.','namespace' => 'CSAT'], function () {
     Route::get('submit/{surveyid}/{uniqueid}','EntriesController@entry')->name('entry');
     Route::post('store/{surveyid}/{uniqueid}','EntriesController@store')->name('store');
-    Route::get('answers','ReportController@answers')->name('answers');
 });
 
-Route::get('livedash','Dash\LiveDashController@livedash')->name('livedash');

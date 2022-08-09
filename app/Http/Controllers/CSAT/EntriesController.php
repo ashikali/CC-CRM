@@ -23,19 +23,18 @@ class EntriesController extends Controller {
         abort_if(empty($survey) > 0, Response::HTTP_FORBIDDEN, '403 Forbidden');
         return view('csat.submit',[ 'survey' => $survey,'uniqueid' => $uniqueid ]);
 
-
     }
-    public function store(Request $request,$uniqueid){
+    public function store(Request $request,$surveyid,$uniqueid){
 
           $count = Entry::where('uniqueid',$uniqueid)->count(); //Survey already finished for that call
           abort_if($count > 0, Response::HTTP_FORBIDDEN, '403 Forbidden');
 
-          $survey = $this->getSurvey();
+          $survey = $this->getSurvey($surveyid);
           $answers = $this->validate($request, $survey->rules);
           $entry = new Entry;
           $entry->uniqueid = $uniqueid;
           $entry->for($survey)->fromArray($answers)->push();
-          return view('csat.after_submit')->with('success','Thank you for your submit');
+          return view('csat.after_submit')->with('success','Thank you for your feedback');
 
     }
     protected function getSurvey($id){
