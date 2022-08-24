@@ -15,6 +15,16 @@
                 {{ trans('global.dashboard') }}
             </a>
         </li>
+	@can('user_management_access')
+        <li class="c-sidebar-nav-item">
+            <a href="{{ route("admin.livedash") }}" class="c-sidebar-nav-link">
+                <i class="c-sidebar-nav-icon fas fa-fw fa-phone fa-tachometer-alt">
+
+                </i>
+                {{ trans('global.livedash') }}
+            </a>
+        </li>
+	@endcan
         @can('user_management_access')
             <li class="c-sidebar-nav-dropdown {{ request()->is("admin/permissions*") ? "c-show" : "" }} {{ request()->is("admin/roles*") ? "c-show" : "" }} {{ request()->is("admin/users*") ? "c-show" : "" }}">
                 <a class="c-sidebar-nav-dropdown-toggle" href="#">
