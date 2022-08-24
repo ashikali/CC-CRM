@@ -132,8 +132,10 @@ class LiveMonitorInfo {
 
    	 $query =   "SELECT
                 	AVG(duration) as ACD,
+			MAX(duration) as MCD,
 			MAX(duration_wait) as MAX,
 			AVG(duration_wait) as AVG
+
    	             FROM
    	     		    call_entry
    	             WHERE
@@ -146,13 +148,13 @@ class LiveMonitorInfo {
    	         return null;
    	 }
 	 if(empty($result["ACD"]))
-	    $result["ACD"] = $result["MAX"] = $result["AVG"] = 0;
+	    $result["ACD"] =  $result["MCD"] = $result["MAX"] = $result["AVG"] = 0;
 
-	 if($result["ACD"] < 0 )
-			$result["ACD"] = 0;
    	 $this->totales["avg_call_time"] = $this->sec2HHMMSS(round($result["ACD"]));
+   	 $this->totales["max_call_time"] = $this->sec2HHMMSS(round($result["MCD"]));
    	 $this->totales["max_wait_time"] = $this->sec2HHMMSS(round($result["MAX"]));
    	 $this->totales["avg_wait_time"] = $this->sec2HHMMSS(round($result["AVG"]));
+
 
   }
 
@@ -184,9 +186,9 @@ class LiveMonitorInfo {
      $query = "
  		SELECT
  			distinct(agent.number) number,agent.name,callerid,
-            UNIX_TIMESTAMP(now()) - UNIX_TIMESTAMP(cce.datetime_init) as duration,
-            cce.datetime_init,CONCAT('SIP/',agent.number) as extension
-        FROM
+           	        UNIX_TIMESTAMP(now()) - UNIX_TIMESTAMP(cce.datetime_init) as duration,
+           	        cce.datetime_init,CONCAT('SIP/',agent.number) as extension
+        	FROM
  			current_call_entry as cce,agent
  		WHERE
  			agent.id=cce.id_agent
@@ -206,7 +208,7 @@ class LiveMonitorInfo {
     $current_call_tag = "
  <br><div class=agent_info>Call Information</div>
  <table width=100% border=1>
- <tr><td width=2% align=center><img src=img/telephone_ans.gif width=50px height=50px></td>
+ <tr><td width=2% align=center><img src=/img/telephone_ans.gif width=50px height=50px></td>
  <th class=info_head>Agent Name</th>
  <th class=info_head>Agent Number</th>
  <th class=info_head>Extension</th>
@@ -214,7 +216,7 @@ class LiveMonitorInfo {
  <th class=info_head>Duration</th>";
 
     $current_call_row = "<tr>
-    <td class=info_val><a href='http://10.20.50.223/chan_spy.php?exten_spy=%s&agent_number=%s' target='_blank'><img src=img/agent_on_call.png width=50px height=50px></a></td>
+    <td class=info_val><a href='http://10.20.50.223/chan_spy.php?exten=%s&spyexten=%s' target='_blank'><img src=/img/agent_on_call.png width=50px height=50px></a></td>
     <td class=info_val>%s</td>
     <td class=info_val>%s</td>
     <td class=info_val>%s</td>
@@ -234,7 +236,7 @@ class LiveMonitorInfo {
 	    $row[4] = $this->sec2HHMMSS($duration);
  	    if($row[3] > 100 )
  	         $row[3] = 100; //just for align if it should not go beyond
- 	$content = $content.sprintf($current_call_row,$this->exten_spy,$row['number'],$row['name'],$row['number'],$row['extension'],
+ 	$content = $content.sprintf($current_call_row,$this->exten_spy,$row['extension'],$row['name'],$row['number'],$row['extension'],
          $row['callerid'],ceil($row[3])."%",$row[4]);
    }
 
@@ -263,11 +265,11 @@ class LiveMonitorInfo {
         $current_break_tag = "
   <br><div class=agent_info>Agents On Break</div>
    <table width=100% border=1>
-   <tr><td width=3% align=center><img src=img/agent_break_head.jpg width=50px height=50px></td>
+   <tr><td width=3% align=center><img src=/img/agent_break_head.jpg width=50px height=50px></td>
        <th class=info_head>Agent Name</th><th class=info_head>Agent Number</th>
        <th class=info_head>Extension</th><th class=info_head>Duration</th></tr>";
 
-        $current_break_row = "<tr><td class=info_val><img src=img/agent_on_break.jpg width=50px height=50px></td>
+        $current_break_row = "<tr><td class=info_val><img src=/img/agent_on_break.jpg width=50px height=50px></td>
                               <td class=info_val>%s</td><td class=info_val>%s</td><td class=info_val>%s</td><td>
      <div class='meter-wrap'>
              <div style='background-color: #00ff00'>
@@ -310,13 +312,13 @@ class LiveMonitorInfo {
   <br><div class=agent_info>Waiting Calls</div>
      <table width=100% border=1>
      <tr>
-	<th width=3% align=center><img src=img/calls_waiting.png width=50px height=50px></th>
+	<th width=3% align=center><img src=/img/calls_waiting.png width=50px height=50px></th>
 	<th class=info_head>Caller id</th>
 	<th class=info_head>Waiting Duration</th>
 	</tr>";
 
         $ring_row = "<tr>
-                         <td class=meter-wrap><img src=img/queue_waiting.png width=50px height=50px></td>
+                         <td class=meter-wrap><img src=/img/queue_waiting.png width=50px height=50px></td>
                          <td class=info_val>%s</td>
                          <td>
                              <div class='meter-wrap'>

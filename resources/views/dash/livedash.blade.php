@@ -1,7 +1,7 @@
-<link rel="stylesheet" type="text/css" href="css/live_monitor.css?version=1.2"/>
-<script type="text/javascript" src="js/jquery.min.js"></script>
-<script type="text/javascript" src="js/raphael-2.1.4.min.js"></script>
-<script type="text/javascript" src="js/justgage.js"></script>
+<link rel="stylesheet" type="text/css" href="{{asset('css/live_monitor.css?version=1.2')}}"/>
+<script type="text/javascript" src="{{asset('js/jquery.min.js')}}"></script>
+<script type="text/javascript" src="{{asset('js/raphael-2.1.4.min.js')}}"></script>
+<script type="text/javascript" src="{{asset('js/justgage.js')}}"></script>
 
 <style>
 .gauge {
@@ -20,7 +20,7 @@
 </td>
 <td width="25%" align="left">
 <div class="select_tags">
-<form action="/livedash">
+<form action="/admin/livedash">
         <input type="text" value="{{$exten_spy}}" name="exten_spy" size="3px">
         <select class="select_class" id="cbo_estado" name="queue_opt" >
             @foreach($queues as  $id => $queue)
@@ -36,51 +36,51 @@
 <tr>
     <td width=25% align="center">
 	<table border=1>
-	<tr><td rowspan=2 style="background-color:white"><img src=img/agent_online.png width=50px height=50px></td>
+	<tr><td rowspan=2 style="background-color:white"><img src="{{asset('img/agent_online.png')}}" width=50px height=50px></td>
         <th  width=100% class="info_head">Agent Logged In  </th></tr>
 	<tr><td class="info_val"><label id="agent_logged_in">{{$rep_info["agent_logged_in"]}}</label></td></tr>
         </table>
     </td>
     <td width=25%>
-    <table border=1><tr><td rowspan=2 style="background-color:white"><img src=img/agent_on_break.jpg width=50px height=50px></td>
+    <table border=1><tr><td rowspan=2 style="background-color:white"><img src="{{asset('img/agent_on_break.jpg')}}" width=50px height=50px></td>
 		<th  width=100% class="info_head">Agent on Break</th></tr>
 	       <tr><td class="info_val"><label id="agent_on_brk">{{$rep_info["agent_on_brk"]}}</label></td></tr>
         </table>
     </td>
     <td width=25%>
-        <table border=1><tr><td rowspan=2 style="background-color:white"><img src=img/avg_call_time.jpg width=50px height=50px></td>
+        <table border=1><tr><td rowspan=2 style="background-color:white"><img src="{{asset('img/avg_call_time.jpg')}}" width=50px height=50px></td>
          <th  width=100% class="info_head">Avg. Call Time </th></tr>
 	       <tr><td class="info_val"><span id="avg_call_time">{{$rep_info["avg_call_time"]}}</span></td></tr>
         </table>
     </td>
     <td width=25% align="center">
-        <table border=1><tr><td rowspan=2 style="background-color:white"><img src=img/missed_call.jpg width=50px height=50px></td>
-            <th  width=100% class="info_head">Missed Calls</th></tr>
-	       <tr><td class="info_val"><label id="missed_call">{{$rep_info["missed_call"]}}</label></td></tr>
+        <table border=1><tr><td rowspan=2 style="background-color:white"><img src="{{asset('img/missed_call.jpg')}}" width=50px height=50px></td>
+            <th  width=100% class="info_head">Maximum Call Time</th></tr>
+	       <tr><td class="info_val"><label id="missed_call">{{$rep_info["max_call_time"]}}</label></td></tr>
         </table>
     </td>
 </tr>
 <tr>
     <td width=25%>
-        <table border=1><tr><td rowspan=2 style="background-color:white"><img src=img/agent_ready.png width=50px height=50px></td>
+        <table border=1><tr><td rowspan=2 style="background-color:white"><img src="{{asset('img/agent_ready.png')}}" width=50px height=50px></td>
            <th  width=100% class="info_head">Agent on ready</th></tr>
 	       <tr><td class="info_val"><label id="agent_on_ready">{{$rep_info["agent_on_ready"]}}</label></td></tr>
         </table>
     </td>
     <td width=25%>
-        <table border=1><tr><td rowspan=2 style="background-color:white"><img src=img/agent_on_call.png width=50px height=50px></td>
+        <table border=1><tr><td rowspan=2 style="background-color:white"><img src="{{asset('img/agent_on_call.png')}}" width=50px height=50px></td>
            <th  width=100% class="info_head">Agent on call</th></tr>
 	       <tr><td class="info_val"><label id="agent_on_call">{{$rep_info["agent_on_call"]}}</label></td></tr>
         </table>
     </td>
     <td width=25% align="center">
-        <table border=1><tr><td rowspan=2 style="background-color:white"><img src=img/waiting2.png width=50px height=50px></td>
+        <table border=1><tr><td rowspan=2 style="background-color:white"><img src="{{asset('img/waiting2.png')}}" width=50px height=50px></td>
            <th  width=100% class="info_head">Average Wait Time</th></tr>
 	       <tr><td class="info_val"><label id="avg_wait_time">{{$rep_info["avg_wait_time"]}}</label></td></tr>
         </table>
     </td>
     <td width=25% align="center">
-        <table border=1><tr><td rowspan=2 style="background-color:white"><img src=img/waiting0.png width=50px height=50px></td>
+        <table border=1><tr><td rowspan=2 style="background-color:white"><img src="{{asset('img/waiting0.png')}}" width=50px height=50px></td>
             <th  width=100% class="info_head">Maximum Wait Time</th></tr>
 	       <tr><td class="info_val"><label id="max_wait_time">{{$rep_info["max_wait_time"]}}</label></td></tr>
         </table>

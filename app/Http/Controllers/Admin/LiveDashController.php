@@ -32,7 +32,7 @@ class LiveDashController extends Controller {
         $reports->bringInfo();
 
         $rep_info["heading"] = $queues[$queue_opt];
-        $rep_info["missed_call"] = 5;
+        $rep_info["max_call_time"] = $reports->totales["max_call_time"];
 
         $css_waiting = "info_val";
         if($reports->totales["waiting_calls"] > 0 and $reports->totales["waiting_calls"] < 3)
