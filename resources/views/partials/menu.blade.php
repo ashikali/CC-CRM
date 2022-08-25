@@ -15,17 +15,15 @@
                 {{ trans('global.dashboard') }}
             </a>
         </li>
-	@can('user_management_access')
-        <li class="c-sidebar-nav-item">
-            <a href="{{ route("admin.livedash") }}" class="c-sidebar-nav-link">
-                <i class="c-sidebar-nav-icon fas fa-fw fa-phone fa-tachometer-alt">
-
-                </i>
-                {{ trans('global.livedash') }}
-            </a>
-        </li>
-	@endcan
         @can('user_management_access')
+            <li class="c-sidebar-nav-item">
+                <a href="{{ route("admin.livedash") }}" class="c-sidebar-nav-link">
+                    <i class="c-sidebar-nav-icon fas fa-fw fa-phone fa-tachometer-alt">
+
+                    </i>
+                    {{ trans('global.livedash') }}
+                </a>
+            </li>
             <li class="c-sidebar-nav-dropdown {{ request()->is("admin/permissions*") ? "c-show" : "" }} {{ request()->is("admin/roles*") ? "c-show" : "" }} {{ request()->is("admin/users*") ? "c-show" : "" }}">
                 <a class="c-sidebar-nav-dropdown-toggle" href="#">
                     <i class="fa-fw fas fa-users c-sidebar-nav-icon">
@@ -78,7 +76,7 @@
                 <ul class="c-sidebar-nav-dropdown-items">
                     @can('csat_report')
                         <li class="c-sidebar-nav-item">
-                            <a href="{{ route("admin.answers") }}" class="c-sidebar-nav-link {{ request()->is("admin/answers") || request()->is("admin/answers*") ? "c-active" : "" }}">
+                            <a href="{{ route("csat.answers") }}" class="c-sidebar-nav-link {{ request()->is("csat/answers") || request()->is("csat/answers*") ? "c-active" : "" }}">
                                 <i class="fa-fw fas fa-external-link-alt c-sidebar-nav-icon">
 
                                 </i>

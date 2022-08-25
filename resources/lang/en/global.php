@@ -322,5 +322,5 @@ return [
     'leave'                          => 'Leave',
     'calendar'                       => 'Calendar',
     'messenger'                      => 'Messenger',
-    'livedash'			     => 'Live Calls',
+  'livedash'                       => 'Live Calls',
 ];

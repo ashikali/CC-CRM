@@ -12,7 +12,7 @@ class ReportController extends Controller {
 
 	public function answers(){
 
-        	abort_if(Gate::denies('csat_report'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+        abort_if(Gate::denies('csat_report'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 		return view("csat.answers");
 
 	}
