@@ -17,7 +17,7 @@
         </li>
         @can('user_management_access')
             <li class="c-sidebar-nav-item">
-                <a href="{{ route("admin.livedash") }}" class="c-sidebar-nav-link">
+                <a target="_blank" href="{{ route("admin.livedash") }}" class="c-sidebar-nav-link">
                     <i class="c-sidebar-nav-icon fas fa-fw fa-phone fa-tachometer-alt">
 
                     </i>
@@ -76,7 +76,7 @@
                 <ul class="c-sidebar-nav-dropdown-items">
                     @can('csat_report')
                         <li class="c-sidebar-nav-item">
-                            <a href="{{ route("csat.answers") }}" class="c-sidebar-nav-link {{ request()->is("csat/answers") || request()->is("csat/answers*") ? "c-active" : "" }}">
+                            <a href="{{ route("admin.csat.answers") }}" class="c-sidebar-nav-link {{ request()->is("csat/answers") || request()->is("csat/answers*") ? "c-active" : "" }}">
                                 <i class="fa-fw fas fa-external-link-alt c-sidebar-nav-icon">
 
                                 </i>

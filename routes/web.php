@@ -38,7 +38,7 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'namespace' => 'Admin', 'mi
     Route::resource('contacts', 'ContactController');
  
     // CSAT Answers 
-    Route::get('answers','ReportController@answers')->name('answers');
+    Route::get('answers','ReportController@answers')->name('csat.answers');
 
     //Live Dash
     Route::get('livedash','LiveDashController@livedash')->name('livedash');
