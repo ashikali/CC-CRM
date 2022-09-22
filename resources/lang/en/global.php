@@ -322,5 +322,8 @@ return [
     'leave'                          => 'Leave',
     'calendar'                       => 'Calendar',
     'messenger'                      => 'Messenger',
-  'livedash'                       => 'Live Calls',
+    'livedash'                       => 'Live Calls',
+    'start_date' 		     => 'Start Date',
+    'end_date'                       => 'End Date',
+    'CSAT Report'		     => 'CSAT Report',
 ];

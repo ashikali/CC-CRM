@@ -19,15 +19,26 @@ class AbandonedCallsController extends Controller
         abort_if(Gate::denies('abandoned_call_access'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
         if ($request->ajax()) {
+	    
+	    $start_date = date('Y-m-d');
+	    $end_date = date('Y-m-d');
+
+	    if(isset($request->start_date))
+			$start_date = $request->start_date;
+	    if(isset($request->end_date))
+			$end_date = $request->end_date;
+
             $query = AbandonedCall::query()->select(sprintf('%s.*', (new AbandonedCall())->table));
             $query->where('status','abandonada');
-
+            $query->whereBetween('datetime_entry_queue', array($start_date." 00:00:00", $end_date." 23:59:59" ));
+ 
             $table = Datatables::of($query);
 
             $table->addColumn('placeholder', '&nbsp;');
             $table->addColumn('actions', '&nbsp;');
 
             $table->editColumn('actions', function ($row) {
+
                 $viewGate = 'abandoned_call_show';
                 $editGate = 'abandoned_call_edit';
                 $deleteGate = 'abandoned_call_delete';
@@ -40,6 +51,7 @@ class AbandonedCallsController extends Controller
                 'crudRoutePart',
                 'row'
             ));
+
             });
 
             $table->editColumn('id', function ($row) {
@@ -111,4 +123,6 @@ class AbandonedCallsController extends Controller
 
         return response(null, Response::HTTP_NO_CONTENT);
     }
+
+
 }

@@ -7,6 +7,23 @@
     </div>
 
     <div class="card-body">
+
+	<div class="row pl-3">
+		    <div class="form-inline">
+	 		<div class="form-group pl-3 pb-3">
+                	     <label for="start_date">{{ trans('global.start_date') }}</label><br/>
+                 	     <input type="text" class="input-sm form-control date" name="start_date" id="start_date" value="" />
+			</div>
+	 		<div class="form-group pl-3 pb-3">
+                	     <label for="end_date">{{ trans('global.end_date') }}</label>
+                 	     <input type="text" class="input-sm form-control date" name="end_date" id="end_date" value=""/>
+		  	</div>
+	 		<div class="form-group pl-3 pb-3">
+			 <button type="button" id="dateSearch" class="btn btn-sm btn-primary">Search</button>
+			</div>
+		   </div></br>
+	</div>
+		
         <table class=" table table-bordered table-striped table-hover ajaxTable datatable datatable-AbandonedCall">
             <thead>
                 <tr>
@@ -77,8 +94,6 @@
         </table>
     </div>
 </div>
-
-
 @endsection
 @section('scripts')
 @parent
@@ -91,7 +106,13 @@
     serverSide: true,
     retrieve: true,
     aaSorting: [],
-    ajax: "{{ route('admin.abandoned-calls.index') }}",
+    ajax: {
+    	url: "{{ route('admin.abandoned-calls.index') }}",
+        data: function (d) {
+            d.start_date = $('#start_date').val();
+            d.end_date = $('#end_date').val();
+        }
+    },
     columns: [
       { data: 'placeholder', name: 'placeholder' },
       { data: 'id', name: 'id' },
@@ -134,7 +155,9 @@ table.on('column-visibility.dt', function(e, settings, column, state) {
           visibleColumnsIndexes.push(colIdx);
       });
   })
+$('#dateSearch').on('click', function() {
+                table.draw();
+            });
 });
-
 </script>
 @endsection
