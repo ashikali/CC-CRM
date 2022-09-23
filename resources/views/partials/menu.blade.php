@@ -7,14 +7,6 @@
     </div>
 
     <ul class="c-sidebar-nav">
-        <li class="c-sidebar-nav-item">
-            <a href="{{ route("admin.home") }}" class="c-sidebar-nav-link">
-                <i class="c-sidebar-nav-icon fas fa-fw fa-tachometer-alt">
-
-                </i>
-                {{ trans('global.dashboard') }}
-            </a>
-        </li>
         @can('user_management_access')
             <li class="c-sidebar-nav-item">
                 <a target="_blank" href="{{ route("admin.livedash") }}" class="c-sidebar-nav-link">
@@ -66,21 +58,28 @@
             </li>
         @endcan
         @can('csat_access')
-            <li class="c-sidebar-nav-dropdown {{ request()->is("admin/csat*") ? "c-show" : "" }}">
+            <li class="c-sidebar-nav-dropdown {{ request()->is("admin/answers*") ? "c-show" : "" }}">
                 <a class="c-sidebar-nav-dropdown-toggle" href="#">
                     <i class="fa-fw fas fa-address-card c-sidebar-nav-icon">
-
                     </i>
                     {{ trans('cruds.csat.title') }}
                 </a>
                 <ul class="c-sidebar-nav-dropdown-items">
                     @can('csat_report')
                         <li class="c-sidebar-nav-item">
-                            <a href="{{ route("admin.csat.answers") }}" class="c-sidebar-nav-link {{ request()->is("csat/answers") || request()->is("csat/answers*") ? "c-active" : "" }}">
+                            <a href="{{ route("admin.csat.answers") }}" class="c-sidebar-nav-link {{ request()->is("csat/answers") || request()->is("csat/answers") ? "c-active" : "" }}">
                                 <i class="fa-fw fas fa-external-link-alt c-sidebar-nav-icon">
 
                                 </i>
                                 {{ trans('cruds.csat.answers') }}
+                            </a>
+                        </li>
+                        <li class="c-sidebar-nav-item">
+                            <a href="{{ route("admin.csat.answers_horizontal") }}" class="c-sidebar-nav-link {{ request()->is("csat/answers_horizontal") || request()->is("csat/answers_horizontal") ? "c-active" : "" }}">
+                                <i class="fa-fw fas fa-external-link-alt c-sidebar-nav-icon">
+
+                                </i>
+                                {{ trans('cruds.csat.answers_horizontal') }}
                             </a>
                         </li>
                     @endcan

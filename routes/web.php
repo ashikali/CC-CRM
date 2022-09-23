@@ -1,5 +1,4 @@
 <?php
-
 Route::redirect('/', '/login');
 Route::get('/home', function () {
     if (session('status')) {
@@ -39,6 +38,9 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'namespace' => 'Admin', 'mi
  
     // CSAT Answers 
     Route::get('answers','ReportController@answers')->name('csat.answers');
+
+    //CSAT Horizontal Report
+    Route::get('answers_horizontal','ReportController@answers_horizontal')->name('csat.answers_horizontal');
 
     //Live Dash
     Route::get('livedash','LiveDashController@livedash')->name('livedash');

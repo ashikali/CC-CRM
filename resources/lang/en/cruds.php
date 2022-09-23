@@ -69,6 +69,7 @@ return [
         'title'          => 'CSAT',
         'title_singular' => 'CSAT',
         'answers' => 'Answers',
+	'answers_horizontal' => 'Horizontal Answers',
     ],
     'abandonedCall' => [
         'title'          => 'Abandoned Calls',

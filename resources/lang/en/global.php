@@ -326,4 +326,5 @@ return [
     'start_date' 		     => 'Start Date',
     'end_date'                       => 'End Date',
     'CSAT Report'		     => 'CSAT Report',
+    'CSAT Horizontal Report' 	     => 'CSAT Horizontal Report',
 ];
