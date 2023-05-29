@@ -392,6 +392,17 @@ class Stringable implements JsonSerializable
     }
 
     /**
+     * Convert inline Markdown into HTML.
+     *
+     * @param  array  $options
+     * @return static
+     */
+    public function inlineMarkdown(array $options = [])
+    {
+        return new static(Str::inlineMarkdown($this->value, $options));
+    }
+
+    /**
      * Masks a portion of a string with a repeated character.
      *
      * @param  string  $character
@@ -940,6 +951,19 @@ class Stringable implements JsonSerializable
     public function whenExactly($value, $callback, $default = null)
     {
         return $this->when($this->exactly($value), $callback, $default);
+    }
+
+    /**
+     * Execute the given callback if the string is not an exact match with the given value.
+     *
+     * @param  string  $value
+     * @param  callable  $callback
+     * @param  callable|null  $default
+     * @return static
+     */
+    public function whenNotExactly($value, $callback, $default = null)
+    {
+        return $this->when(! $this->exactly($value), $callback, $default);
     }
 
     /**

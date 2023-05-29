@@ -72,7 +72,7 @@ class Response
     public const HTTP_PRECONDITION_REQUIRED = 428;                                       // RFC6585
     public const HTTP_TOO_MANY_REQUESTS = 429;                                           // RFC6585
     public const HTTP_REQUEST_HEADER_FIELDS_TOO_LARGE = 431;                             // RFC6585
-    public const HTTP_UNAVAILABLE_FOR_LEGAL_REASONS = 451;
+    public const HTTP_UNAVAILABLE_FOR_LEGAL_REASONS = 451;                               // RFC7725
     public const HTTP_INTERNAL_SERVER_ERROR = 500;
     public const HTTP_NOT_IMPLEMENTED = 501;
     public const HTTP_BAD_GATEWAY = 502;
@@ -212,6 +212,8 @@ class Response
     ];
 
     /**
+     * @param int $status The HTTP status code (200 "OK" by default)
+     *
      * @throws \InvalidArgumentException When the HTTP status code is not valid
      */
     public function __construct(?string $content = '', int $status = 200, array $headers = [])
@@ -380,6 +382,7 @@ class Response
             litespeed_finish_request();
         } elseif (!\in_array(\PHP_SAPI, ['cli', 'phpdbg'], true)) {
             static::closeOutputBuffers(0, true);
+            flush();
         }
 
         return $this;
@@ -717,6 +720,9 @@ class Response
      */
     public function setExpires(\DateTimeInterface $date = null): static
     {
+        if (1 > \func_num_args()) {
+            trigger_deprecation('symfony/http-foundation', '6.2', 'Calling "%s()" without any arguments is deprecated, pass null explicitly instead.', __METHOD__);
+        }
         if (null === $date) {
             $this->headers->remove('Expires');
 
@@ -752,8 +758,10 @@ class Response
             return (int) $this->headers->getCacheControlDirective('max-age');
         }
 
-        if (null !== $this->getExpires()) {
-            return (int) $this->getExpires()->format('U') - (int) $this->getDate()->format('U');
+        if (null !== $expires = $this->getExpires()) {
+            $maxAge = (int) $expires->format('U') - (int) $this->getDate()->format('U');
+
+            return max($maxAge, 0);
         }
 
         return null;
@@ -829,7 +837,7 @@ class Response
      *
      * It returns null when no freshness information is present in the response.
      *
-     * When the responses TTL is <= 0, the response may not be served from cache without first
+     * When the response's TTL is 0, the response may not be served from cache without first
      * revalidating with the origin.
      *
      * @final
@@ -838,7 +846,7 @@ class Response
     {
         $maxAge = $this->getMaxAge();
 
-        return null !== $maxAge ? $maxAge - $this->getAge() : null;
+        return null !== $maxAge ? max($maxAge - $this->getAge(), 0) : null;
     }
 
     /**
@@ -896,6 +904,9 @@ class Response
      */
     public function setLastModified(\DateTimeInterface $date = null): static
     {
+        if (1 > \func_num_args()) {
+            trigger_deprecation('symfony/http-foundation', '6.2', 'Calling "%s()" without any arguments is deprecated, pass null explicitly instead.', __METHOD__);
+        }
         if (null === $date) {
             $this->headers->remove('Last-Modified');
 
@@ -934,6 +945,9 @@ class Response
      */
     public function setEtag(string $etag = null, bool $weak = false): static
     {
+        if (1 > \func_num_args()) {
+            trigger_deprecation('symfony/http-foundation', '6.2', 'Calling "%s()" without any arguments is deprecated, pass null explicitly instead.', __METHOD__);
+        }
         if (null === $etag) {
             $this->headers->remove('Etag');
         } else {
