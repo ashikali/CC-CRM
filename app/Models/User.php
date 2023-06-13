@@ -36,6 +36,7 @@ class User extends Authenticatable
         'name',
         'email',
         'email_verified_at',
+	'password_changed_at', 
         'password',
         'remember_token',
         'created_at',

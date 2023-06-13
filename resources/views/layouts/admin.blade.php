@@ -69,6 +69,13 @@
                             </div>
                         </div>
                     @endif
+		    @if(session('warn'))
+                        <div class="row mb-2">
+                            <div class="col-lg-12">
+                                <div class="alert alert-danger" role="alert">{{ session('warn') }}</div>
+                            </div>
+                        </div>
+                    @endif
                     @if($errors->count() > 0)
                         <div class="alert alert-danger">
                             <ul class="list-unstyled">

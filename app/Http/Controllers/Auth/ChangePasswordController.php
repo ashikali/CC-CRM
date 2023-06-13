@@ -8,6 +8,10 @@ use App\Http\Requests\UpdateProfileRequest;
 use Gate;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Illuminate\Support\Facades\Log;
+use Debugbar;
+use Carbon\Carbon;
+
 
 class ChangePasswordController extends Controller
 {
@@ -20,15 +24,15 @@ class ChangePasswordController extends Controller
 
     public function update(UpdatePasswordRequest $request)
     {
-        auth()->user()->update($request->validated());
-
+	$info = $request->validated();
+	$info['password_changed_at'] = Carbon::now();
+        auth()->user()->update($info);
         return redirect()->route('profile.password.edit')->with('message', __('global.change_password_success'));
     }
 
     public function updateProfile(UpdateProfileRequest $request)
     {
         $user = auth()->user();
-
         $user->update($request->validated());
 
         return redirect()->route('profile.password.edit')->with('message', __('global.update_profile_success'));

@@ -881,7 +881,7 @@ CREATE TABLE `migrations` (
   `migration` varchar(255) NOT NULL,
   `batch` int(11) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=20 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -890,7 +890,7 @@ CREATE TABLE `migrations` (
 
 LOCK TABLES `migrations` WRITE;
 /*!40000 ALTER TABLE `migrations` DISABLE KEYS */;
-INSERT INTO `migrations` VALUES (1,'2014_10_12_100000_create_password_resets_table',1),(2,'2019_12_14_000001_create_personal_access_tokens_table',1),(3,'2022_05_15_000001_create_permissions_table',1),(4,'2022_05_15_000002_create_roles_table',1),(5,'2022_05_15_000003_create_users_table',1),(6,'2022_05_15_000006_create_permission_role_pivot_table',1),(7,'2022_05_15_000007_create_role_user_pivot_table',1),(8,'2022_05_15_135830_add_columns_to_call_entry',1),(9,'2022_05_15_160055_add_timestamps_to_contat',1),(10,'2022_05_15_160756_create_answers_table',1),(11,'2022_05_15_160756_create_entries_table',1),(12,'2022_05_15_160756_create_questions_table',1),(13,'2022_05_15_160756_create_sections_table',1),(14,'2022_05_15_160756_create_surveys_table',1),(15,'2022_05_23_063115_add_fiedls_survey_entrys',1),(16,'2022_06_05_061127_create_agent_status',1),(17,'2022_06_07_051803_add_column_queue_table',1),(18,'2022_06_10_040459_add_column_agent',1);
+INSERT INTO `migrations` VALUES (1,'2014_10_12_100000_create_password_resets_table',1),(2,'2019_12_14_000001_create_personal_access_tokens_table',1),(3,'2022_05_15_000001_create_permissions_table',1),(4,'2022_05_15_000002_create_roles_table',1),(5,'2022_05_15_000003_create_users_table',1),(6,'2022_05_15_000006_create_permission_role_pivot_table',1),(7,'2022_05_15_000007_create_role_user_pivot_table',1),(8,'2022_05_15_135830_add_columns_to_call_entry',1),(9,'2022_05_15_160055_add_timestamps_to_contat',1),(10,'2022_05_15_160756_create_answers_table',1),(11,'2022_05_15_160756_create_entries_table',1),(12,'2022_05_15_160756_create_questions_table',1),(13,'2022_05_15_160756_create_sections_table',1),(14,'2022_05_15_160756_create_surveys_table',1),(15,'2022_05_23_063115_add_fiedls_survey_entrys',1),(16,'2022_06_05_061127_create_agent_status',1),(17,'2022_06_07_051803_add_column_queue_table',1),(18,'2022_06_10_040459_add_column_agent',1),(19,'2023_06_12_152955_add_password_changed_at_to_users',2);
 /*!40000 ALTER TABLE `migrations` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -1191,6 +1191,7 @@ CREATE TABLE `users` (
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   `deleted_at` timestamp NULL DEFAULT NULL,
+  `password_changed_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `users_email_unique` (`email`)
 ) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -1202,7 +1203,7 @@ CREATE TABLE `users` (
 
 LOCK TABLES `users` WRITE;
 /*!40000 ALTER TABLE `users` DISABLE KEYS */;
-INSERT INTO `users` VALUES (1,'Admin','admin@admin.com',NULL,'$2y$10$EpCCzHik0CyYp7QGf2MkIejMr4RDR0tuCbNNVefs6zt/Kz95waZh.',NULL,NULL,NULL,NULL),(2,'Agent','agent@bialairport.com',NULL,'$2y$10$QKW64sVDSQHaa883t00F2O1V23XBZC7/p6FwYUZ.iom7tIrQtHivW',NULL,'2022-07-12 05:44:16','2022-07-12 05:45:44',NULL),(3,'sukumar','sukumar.r@bialairport.com',NULL,'$2y$10$oRzPv9uUy/EktiHrs7tE3.z55hN9x2WFND9x0yV2cLmt9zVGhZjDS','nSaQknCTN2vZZzGCuSBrt93YZRjDaybGT5JX8qAIpYf3yjmgQU4OYi2MwwRA','2022-08-05 04:54:08','2022-08-05 04:54:08',NULL);
+INSERT INTO `users` VALUES (1,'Admin','admin@admin.com',NULL,'$2y$10$eZkNNDqt89evVKv.htqR.O7MEVkUDaHwPfYH5FWj.3a0qsd8jywgi',NULL,NULL,'2023-06-13 05:17:37',NULL,'2022-07-12 05:44:16'),(2,'Agent','agent@bialairport.com',NULL,'$2y$10$QKW64sVDSQHaa883t00F2O1V23XBZC7/p6FwYUZ.iom7tIrQtHivW',NULL,'2022-07-12 05:44:16','2022-07-12 05:45:44',NULL,'2022-07-12 05:44:16'),(3,'sukumar','sukumar.r@bialairport.com',NULL,'$2y$10$oRzPv9uUy/EktiHrs7tE3.z55hN9x2WFND9x0yV2cLmt9zVGhZjDS','nSaQknCTN2vZZzGCuSBrt93YZRjDaybGT5JX8qAIpYf3yjmgQU4OYi2MwwRA','2022-08-05 04:54:08','2022-08-05 04:54:08',NULL,'2022-07-12 05:44:16');
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -1239,4 +1240,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-06-12 11:58:56
+-- Dump completed on 2023-06-13 10:51:30

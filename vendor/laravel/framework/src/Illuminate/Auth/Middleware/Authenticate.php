@@ -6,6 +6,11 @@ use Closure;
 use Illuminate\Auth\AuthenticationException;
 use Illuminate\Contracts\Auth\Factory as Auth;
 use Illuminate\Contracts\Auth\Middleware\AuthenticatesRequests;
+use Illuminate\Support\Facades\Auth as LoginInfo;
+use Illuminate\Support\Facades\Redirect;
+use Carbon\Carbon;
+use Debugbar;
+use Illuminate\Support\Facades\Session;
 
 class Authenticate implements AuthenticatesRequests
 {
@@ -40,7 +45,12 @@ class Authenticate implements AuthenticatesRequests
     public function handle($request, Closure $next, ...$guards)
     {
         $this->authenticate($request, $guards);
-
+	//Added for Ashik Ali 
+	$password_changed_at = new Carbon(LoginInfo::user()->password_changed_at);
+	if (Carbon::now()->diffInDays($password_changed_at) >= 30) {
+	    Session::flash('warn', 'Password Expired, Pl consider change'); 
+        } 
+	//Added
         return $next($request);
     }
 
