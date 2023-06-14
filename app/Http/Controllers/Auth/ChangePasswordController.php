@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\UpdatePasswordRequest;
 use App\Http\Requests\UpdateProfileRequest;
+use App\Model\User;
 use Gate;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -25,9 +26,8 @@ class ChangePasswordController extends Controller
     public function update(UpdatePasswordRequest $request)
     {
         $info = $request->validated();
-        $info['updated_at'] = Carbon::parse();
-	    $info['password_changed_at'] = Carbon::now();
-        if($info['updated_at']->gt($info['password_changed_at']->subDays(2))){
+	    $info['password_changed_at'] = auth()->user()->password_changed_at;
+        if($info['password_changed_at']->gt(Carbon::now()->subDays(2))){
             return redirect()->route('profile.password.edit')->with('warn', __('Password can only be changed after 2 days.'));
         }
         auth()->user()->update($info);
