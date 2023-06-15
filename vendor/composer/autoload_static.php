@@ -604,6 +604,7 @@ class ComposerStaticInit6dd80c00159d232cb617ed2cb54f48ed
         'App\\Models\\AbandonedCall' => __DIR__ . '/../..' . '/app/Models/AbandonedCall.php',
         'App\\Models\\CSATAnswer' => __DIR__ . '/../..' . '/app/Models/CSATAnswer.php',
         'App\\Models\\Contact' => __DIR__ . '/../..' . '/app/Models/Contact.php',
+        'App\\Models\\PasswordHistory' => __DIR__ . '/../..' . '/app/Models/PasswordHistory.php',
         'App\\Models\\Permission' => __DIR__ . '/../..' . '/app/Models/Permission.php',
         'App\\Models\\Queue' => __DIR__ . '/../..' . '/app/Models/Queue.php',
         'App\\Models\\Role' => __DIR__ . '/../..' . '/app/Models/Role.php',
