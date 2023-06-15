@@ -24,8 +24,11 @@ class ChangePasswordController extends Controller
 
     public function update(UpdatePasswordRequest $request)
     {
-	$info = $request->validated();
-	$info['password_changed_at'] = Carbon::now();
+        $info = $request->validated();
+	    $info['password_changed_at'] = auth()->user()->password_changed_at;
+        if($info['password_changed_at']->gt(Carbon::now()->subDays(2))){
+            return redirect()->route('profile.password.edit')->with('warn', __('Password can only be changed after 2 days.'));
+        }
         auth()->user()->update($info);
         return redirect()->route('profile.password.edit')->with('message', __('global.change_password_success'));
     }
