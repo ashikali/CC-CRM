@@ -29,7 +29,16 @@ class ChangePasswordController extends Controller
         if($info['password_changed_at']->gt(Carbon::now()->subDays(2))){
             return redirect()->route('profile.password.edit')->with('warn', __('Password can only be changed after 2 days.'));
         }
+
+        $passHistory = auth()->user()->passwordHistories();
+        $pass = $passHistory->orderBy('id', 'desc')->limit(5)->get();
+        $newpass = $request->get('password');
+        if($pass->contains('password', $newpass)){
+            return redirect()->route('profile.password.edit')->with('warn', __('Password can not be one of the last 5 passwords'));
+        }
+
         auth()->user()->update($info);
+        auth()->user()->passwordHistories()->create($info);
         return redirect()->route('profile.password.edit')->with('message', __('global.change_password_success'));
     }
 

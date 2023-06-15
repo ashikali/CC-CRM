@@ -59,6 +59,7 @@ return array(
     'App\\Models\\AbandonedCall' => $baseDir . '/app/Models/AbandonedCall.php',
     'App\\Models\\CSATAnswer' => $baseDir . '/app/Models/CSATAnswer.php',
     'App\\Models\\Contact' => $baseDir . '/app/Models/Contact.php',
+    'App\\Models\\PasswordHistory' => $baseDir . '/app/Models/PasswordHistory.php',
     'App\\Models\\Permission' => $baseDir . '/app/Models/Permission.php',
     'App\\Models\\Queue' => $baseDir . '/app/Models/Queue.php',
     'App\\Models\\Role' => $baseDir . '/app/Models/Role.php',
