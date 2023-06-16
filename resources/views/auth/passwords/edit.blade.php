@@ -55,6 +55,7 @@
                                 {{ $errors->first('password') }}
                             </div>
                         @endif
+                        
                     </div>
                     <div class="form-group">
                         <label class="required" for="title">Repeat New {{ trans('cruds.user.fields.password') }}</label>

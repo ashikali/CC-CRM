@@ -29,7 +29,14 @@ class UpdatePasswordRequest extends FormRequest
     public function rules()
     {
         return [
-            'password' => ['required', 'string', 'min:8', 'confirmed'],
+            'password' => ['required', 'string', 'min:8', 'confirmed', 
+            'regex:/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*(_|[^\w])).+$/'],
+        ];
+    }
+    public function messages()
+    {
+        return [
+            'password.regex' => 'Password must have atleast one uppercase and one lowercase character as well as a numeric digit and symbol.'
         ];
     }
 }
