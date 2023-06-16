@@ -22,6 +22,7 @@ class ChangePasswordController extends Controller
         return view('auth.passwords.edit');
     }
 
+
     public function update(UpdatePasswordRequest $request)
     {
         $info = $request->validated();
@@ -38,6 +39,7 @@ class ChangePasswordController extends Controller
         }
 
         auth()->user()->update($info);
+        
         auth()->user()->passwordHistories()->create($info);
         return redirect()->route('profile.password.edit')->with('message', __('global.change_password_success'));
     }
